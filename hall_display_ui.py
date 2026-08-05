@@ -54,11 +54,11 @@ class App(tk.Tk):
         self.add_bullet(self.important_frame.body, "And Welcome Back Seniors!", CREAM)
         self.add_bullet(self.important_frame.body, "To those new here, welcome to the best hall on campus!", CREAM)
 
-        self.extra_frame = self.make_panel(root, "Future space", GOLD, 2)
+        self.extra_frame = self.make_panel(root, "Menu", GOLD, 2)
         self.extra_frame.pack(fill="x", padx=26, pady=(8, 14))
         tk.Label(
             self.extra_frame.body,
-            text="Add announcements, resources, or QR links here.",
+            text="Enter Food here ....",
             fg=CREAM,
             bg=STONE,
             font=("Sans", 18),
@@ -66,11 +66,11 @@ class App(tk.Tk):
             justify="left",
         ).pack(anchor="w", padx=18, pady=(16, 8))
 
-        self.extra2_frame = self.make_panel(root, "Future space", GOLD, 3)
+        self.extra2_frame = self.make_panel(root, "Loops", GOLD, 3)
         self.extra2_frame.pack(fill="x", padx=26, pady=(8, 14))
         tk.Label(
             self.extra2_frame.body,
-            text="Another panel for later use.",
+            text="No loops today or tomorrow.",
             fg=CREAM,
             bg=STONE,
             font=("Sans", 18),
