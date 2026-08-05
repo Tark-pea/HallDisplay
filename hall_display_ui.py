@@ -70,7 +70,7 @@ class App(tk.Tk):
         self.extra2_frame.pack(fill="x", padx=26, pady=(8, 14))
         tk.Label(
             self.extra2_frame.body,
-            text="No loops today or tomorrow.",
+            text="No loops today or tomorrow.\nTo view and sign up for loops please go to loops.ncssm.edu/loops",
             fg=CREAM,
             bg=STONE,
             font=("Sans", 18),
