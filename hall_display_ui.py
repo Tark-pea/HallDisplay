@@ -2,6 +2,7 @@
 import tkinter as tk
 from datetime import datetime
 import block_display_bot as bdb
+import get_weather_data as gwd
 
 BG = "#111111"
 STONE = "#1b1b1b"
@@ -78,6 +79,18 @@ class App(tk.Tk):
             justify="left",
         ).pack(anchor="w", padx=18, pady=(16, 8))
 
+        self.weather_frame = self.make_panel(root, "Weather", GOLD, 4)
+        self.weather_frame.pack(fill="x", padx=26, pady=(8, 14))
+        self.weather_label = tk.Label(
+            self.weather_frame.body,
+            fg=CREAM,
+            bg=STONE,
+            font=("Sans", 30, "bold"),
+            wraplength=900,
+            justify="center",
+        )
+        self.weather_label.pack(fill="both", expand=True, padx=18, pady=(16, 8))
+
         self.update_ui()
 
     def make_panel(self, parent, title, accent, step):
@@ -127,6 +140,12 @@ class App(tk.Tk):
             self.block_label.config(text=bdb.status_text())
         except Exception:
             self.block_label.config(text="Schedule unavailable.")
+	
+        try:
+            self.weather_label.config(text=gwd.get_forecast())
+        except Exception:
+            self.weather_label.config(text="Weather unavailable.")
+
         self.after(1000, self.update_ui)
 
 if __name__ == "__main__":
