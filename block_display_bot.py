@@ -10,22 +10,44 @@ SCHEDULE = {
 }
 
 MEALS = [
-    (7*60, 9*60 + 30, "BREAKFAST"),
-    (11*60, 13*60, "LUNCH"),
-    (17*60, 19*60, "DINNER"),
+    (7 * 60, 9 * 60 + 30, "BREAKFAST"),
+    (11 * 60, 13 * 60, "LUNCH"),
+    (17 * 60, 19 * 60, "DINNER"),
 ]
 
+
 def to_minutes(t):
+    """Convert a time string to minutes after midnight."""
     t = t.strip().lower()
-    is_pm = "pm" in t
-    is_am = "am" in t
-    t = t.replace("am", "").replace("pm", "").strip()
-    h, m = map(int, t.split(":"))
-    if is_pm and h != 12:
-        h += 12
-    if is_am and h == 12:
-        h = 0
+
+    if "am" in t or "pm" in t:
+        is_pm = "pm" in t
+        t = t.replace("am", "").replace("pm", "").strip()
+        h, m = map(int, t.split(":"))
+
+        if is_pm and h != 12:
+            h += 12
+        elif not is_pm and h == 12:
+            h = 0
+    else:
+        h, m = map(int, t.split(":"))
+
+        # School schedule assumption:
+        # 8-11 = morning
+        # 12 = noon
+        # 1-7 = afternoon
+        if 1 <= h <= 7:
+            h += 12
+
     return h * 60 + m
+
+
+# Convert schedule once
+SCHEDULE_MIN = {
+    day: [(to_minutes(s), to_minutes(e), label) for s, e, label in blocks]
+    for day, blocks in SCHEDULE.items()
+}
+
 
 def fmt_minutes(n):
     h, m = divmod(max(0, n), 60)
@@ -35,82 +57,77 @@ def fmt_minutes(n):
         return f"{h} hour(s)"
     return f"{m} minute(s)"
 
-def find_current(now_min, items):
+
+def current_item(now_min, items):
     for i, (start, end, label) in enumerate(items):
-        s = to_minutes(start) if isinstance(start, str) else start
-        e = to_minutes(end) if isinstance(end, str) else end
-        if s <= now_min < e:
-            return i, (s, e, label)
+        if start <= now_min < end:
+            return i, (start, end, label)
     return None, None
 
-def find_next(now_min, items):
+
+def next_item(now_min, items):
     for start, end, label in items:
-        s = to_minutes(start) if isinstance(start, str) else start
-        e = to_minutes(end) if isinstance(end, str) else end
-        if now_min < s:
-            return (s, e, label)
+        if now_min < start:
+            return (start, end, label)
     return None
 
-def find_next_class(now_min, day_blocks):
-    for start, end, label in day_blocks:
-        if label in {"BREAKFAST", "LUNCH", "DINNER"}:
-            continue
-        s = to_minutes(start)
-        e = to_minutes(end)
-        if now_min < s:
-            return (s, e, label)
-    return None
 
-def main():
-    now = datetime.now()
+def class_now(now_min, blocks):
+    class_items = [
+        item for item in blocks
+        if item[2] not in {"BREAKFAST", "LUNCH", "DINNER"}
+    ]
+    return current_item(now_min, class_items)
+
+
+def next_class(now_min, blocks):
+    class_items = [
+        item for item in blocks
+        if item[2] not in {"BREAKFAST", "LUNCH", "DINNER"}
+    ]
+    return next_item(now_min, class_items)
+
+
+def meal_now(now_min):
+    return current_item(now_min, MEALS)
+
+
+def status_text(now=None):
+    if now is None:
+        now = datetime.now()
+
     day = now.weekday()
     now_min = now.hour * 60 + now.minute
-    blocks = SCHEDULE.get(day, [])
 
-    meal_idx, meal = find_current(now_min, MEALS)
-    class_idx, cur_class = find_current(now_min, blocks)
-    next_class = find_next_class(now_min, blocks)
-    next_meal = find_next(now_min, MEALS)
+    blocks = SCHEDULE_MIN.get(day, [])
 
-    if meal and cur_class and cur_class[2] not in {"LUNCH"}:
-        _, _, meal_label = meal
-        _, _, class_label = cur_class
-        message = f"{meal_label} right now. {class_label} right now."
-        if next_class:
-            ns, ne, nl = next_class
-            message += f" {fmt_minutes(ns - now_min)} till {nl} block."
-        return (message)
-        
+    _, cls = class_now(now_min, blocks)
+    _, meal = meal_now(now_min)
+    nclass = next_class(now_min, blocks)
 
-    if meal and not cur_class:
-        _, _, meal_label = meal
-        message = f"{meal_label} right now."
-        if next_class:
-            ns, ne, nl = next_class
-            message += f" {fmt_minutes(ns - now_min)} till {nl} block."
-        return (message)
-        
+    if meal and cls:
+        msg = f"{meal[2]} right now. {cls[2]} right now."
+        if nclass:
+            msg += f" {fmt_minutes(nclass[0] - now_min)} till {nclass[2]} block."
+        return msg
 
-    if cur_class:
-        _, _, class_label = cur_class
-        nxt = find_next(now_min, blocks)
+    if meal:
+        msg = f"{meal[2]} right now."
+        if nclass:
+            msg += f" {fmt_minutes(nclass[0] - now_min)} till {nclass[2]} block."
+        return msg
+
+    if cls:
+        nxt = next_item(now_min, blocks)
         if nxt:
-            ns, ne, nl = nxt
-            if nl in {"BREAKFAST", "LUNCH", "DINNER"}:
-                message = f"{class_label} right now. {fmt_minutes(ns - now_min)} till {nl} block."
-            else:
-                message = f"{class_label} right now. {fmt_minutes(ns - now_min)} till {nl} block."
-        else:
-            message = f"{class_label} right now. No later blocks scheduled."
-        return (message)
-        
+            return f"{cls[2]} right now. {fmt_minutes(nxt[0] - now_min)} till {nxt[2]} block."
+        return f"{cls[2]} right now. No later blocks scheduled."
 
-    if next_class:
-        ns, ne, nl = next_class
-        return (f"No block right now. {fmt_minutes(ns - now_min)} till {nl} block.")
-        
+    if nclass:
+        return f"No block right now. {fmt_minutes(nclass[0] - now_min)} till {nclass[2]} block."
 
-    return ("No more scheduled blocks today.")
+    return "No more scheduled blocks today."
+
 
 if __name__ == "__main__":
-    print(main())
+    print(status_text())
