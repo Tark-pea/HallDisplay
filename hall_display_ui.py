@@ -50,20 +50,20 @@ class App(tk.Tk):
         )
         self.block_label.pack(fill="both", expand=True, padx=18, pady=18)
 
-        self.important_frame = self.make_panel(root, "Important things", TERRACOTTA, 1)
+        self.important_frame = self.make_panel(root, "Important things", TERRACOTTA, 2)
         self.important_frame.pack(fill="x", padx=26, pady=(8, 14))
         self.add_bullet(self.important_frame.body, "Welcome Juniors!", CREAM)
         self.add_bullet(self.important_frame.body, "And Welcome Back Seniors!", CREAM)
         self.add_bullet(self.important_frame.body, "To those new here, welcome to the best hall on campus!", CREAM)
 
-        self.extra2_frame = self.make_panel(root, "Loops", GOLD, 0.5) #Step is very small
+        self.extra2_frame = self.make_panel(root, "Loops", GOLD, 1) #Step is very small
         self.extra2_frame.pack(fill="x", padx=26, pady=(8, 14))
         tk.Label(
             self.extra2_frame.body,
             text="No loops today or tomorrow. To view and sign up for loops please go to loops.ncssm.edu/loops",
             fg=CREAM,
             bg=STONE,
-            font=("Sans", 18),
+            font=("Sans", 24),
             wraplength=900,
             justify="center",
         ).pack(fill="both",expand=True, padx=18, pady=(16, 8))
@@ -80,7 +80,7 @@ class App(tk.Tk):
         )
         self.weather_label.pack(fill="both", expand=True, padx=18, pady=(16, 8))
 
-        self.menu_frame = self.make_panel(root, "Menu", GOLD, 36)
+        self.menu_frame = self.make_panel(root, "Menu", GOLD, 40)
         self.menu_frame.pack(fill="x", padx=26, pady=(8, 14))
         self.menu_label = tk.Label(
             self.menu_frame.body,
@@ -135,7 +135,7 @@ class App(tk.Tk):
         row = tk.Frame(parent, bg=STONE)
         row.pack(fill="x", padx=18, pady=6)
         tk.Label(row, text="▣", fg=GOLD, bg=STONE, font=("Sans", 16, "bold")).pack(side="left", padx=(0, 10))
-        tk.Label(row, text=text, fg=fg, bg=STONE, font=("Sans", 18), wraplength=900, justify="left").pack(side="left", anchor="w")
+        tk.Label(row, text=text, fg=fg, bg=STONE, font=("Sans", 24), wraplength=900, justify="left").pack(side="left", anchor="w")
 
     def update_ui(self):
         now = datetime.now()

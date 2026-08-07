@@ -242,7 +242,7 @@ def render_text(data):
         lines.append("  No menu posted for this meal yet. Check back soon!")
     else:
         for station in data["menu"]["stations"]:
-            lines.append("")
+            #lines.append("")
             #lines.append(f"  {station['name']}")
             #lines.append("  " + "-" * (len(station["name"]) or 4))
             for name, cal in station["items"]:
