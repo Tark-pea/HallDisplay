@@ -3,6 +3,7 @@ import tkinter as tk
 from datetime import datetime
 import block_display_bot as bdb
 import get_weather_data as gwd
+import menu_board as md 
 
 BG = "#111111"
 STONE = "#1b1b1b"
@@ -55,31 +56,19 @@ class App(tk.Tk):
         self.add_bullet(self.important_frame.body, "And Welcome Back Seniors!", CREAM)
         self.add_bullet(self.important_frame.body, "To those new here, welcome to the best hall on campus!", CREAM)
 
-        self.extra_frame = self.make_panel(root, "Menu", GOLD, 2)
-        self.extra_frame.pack(fill="x", padx=26, pady=(8, 14))
-        tk.Label(
-            self.extra_frame.body,
-            text="Enter Food here ....",
-            fg=CREAM,
-            bg=STONE,
-            font=("Sans", 18),
-            wraplength=900,
-            justify="left",
-        ).pack(anchor="w", padx=18, pady=(16, 8))
-
-        self.extra2_frame = self.make_panel(root, "Loops", GOLD, 3)
+        self.extra2_frame = self.make_panel(root, "Loops", GOLD, 0.5) #Step is very small
         self.extra2_frame.pack(fill="x", padx=26, pady=(8, 14))
         tk.Label(
             self.extra2_frame.body,
-            text="No loops today or tomorrow.\nTo view and sign up for loops please go to loops.ncssm.edu/loops",
+            text="No loops today or tomorrow. To view and sign up for loops please go to loops.ncssm.edu/loops",
             fg=CREAM,
             bg=STONE,
             font=("Sans", 18),
             wraplength=900,
-            justify="left",
-        ).pack(anchor="w", padx=18, pady=(16, 8))
+            justify="center",
+        ).pack(fill="both",expand=True, padx=18, pady=(16, 8))
 
-        self.weather_frame = self.make_panel(root, "Weather", GOLD, 4)
+        self.weather_frame = self.make_panel(root, "Weather", GOLD, 1)
         self.weather_frame.pack(fill="x", padx=26, pady=(8, 14))
         self.weather_label = tk.Label(
             self.weather_frame.body,
@@ -91,7 +80,22 @@ class App(tk.Tk):
         )
         self.weather_label.pack(fill="both", expand=True, padx=18, pady=(16, 8))
 
+        self.menu_frame = self.make_panel(root, "Menu", GOLD, 36)
+        self.menu_frame.pack(fill="x", padx=26, pady=(8, 14))
+        self.menu_label = tk.Label(
+            self.menu_frame.body,
+            fg=CREAM,
+            bg=STONE,
+            font=("Sans", 24),
+            wraplength=900,
+            justify="center",
+        )
+        self.menu_label.pack(fill="both",expand=True, padx=18, pady=(16, 8))
+
         self.update_ui()
+
+
+# step is how big the frame is
 
     def make_panel(self, parent, title, accent, step):
         outer = tk.Frame(parent, bg=BORDER, highlightthickness=0)
@@ -145,6 +149,12 @@ class App(tk.Tk):
             self.weather_label.config(text=gwd.get_forecast())
         except Exception:
             self.weather_label.config(text="Weather unavailable.")
+
+        data = md.get_board_data()
+        try:
+            self.menu_label.config(text=md.render_text(data))
+        except Exception:
+            self.menu_label.config(text="Menu unavailable.")
 
         self.after(1000, self.update_ui)
 
