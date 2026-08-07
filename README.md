@@ -64,7 +64,6 @@ Features include:
 - tkinter
 - beautifulsoup4
 - requests
-- tzdata
 
 ---
 
