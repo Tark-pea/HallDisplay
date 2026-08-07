@@ -96,6 +96,13 @@ or
 bash start_display.sh
 ```
 
+or from ssh
+```bash
+export DISPLAY=:0
+./HallDisplay/start_display.sh &
+xtrlock & disown
+```
+
 The application launches in fullscreen.
 
 Press **Esc** to exit.
