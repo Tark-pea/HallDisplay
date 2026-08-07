@@ -80,7 +80,7 @@ class App(tk.Tk):
         )
         self.weather_label.pack(fill="both", expand=True, padx=18, pady=(16, 8))
 
-        self.menu_frame = self.make_panel(root, "Menu", GOLD, 42)
+        self.menu_frame = self.make_panel(root, "Menu", GOLD, 44)
         self.menu_frame.pack(fill="x", padx=26, pady=(8, 14))
         self.menu_label = tk.Label(
             self.menu_frame.body,
