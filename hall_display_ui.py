@@ -52,9 +52,8 @@ class App(tk.Tk):
 
         self.important_frame = self.make_panel(root, "Important things", TERRACOTTA, 2)
         self.important_frame.pack(fill="x", padx=26, pady=(8, 14))
-        self.add_bullet(self.important_frame.body, "Welcome Juniors!", CREAM)
-        self.add_bullet(self.important_frame.body, "And Welcome Back Seniors!", CREAM)
-        self.add_bullet(self.important_frame.body, "To those new here, welcome to the best hall on campus!", CREAM)
+        self.add_bullet(self.important_frame.body, "Hall meetings at 9:30 PM every tuesday!", CREAM)
+        self.add_bullet(self.important_frame.body, "Room check is right after every hall meeting.", CREAM)
 
         self.extra2_frame = self.make_panel(root, "Loops", GOLD, 1) #Step is very small
         self.extra2_frame.pack(fill="x", padx=26, pady=(8, 14))
@@ -68,7 +67,7 @@ class App(tk.Tk):
             justify="center",
         ).pack(fill="both",expand=True, padx=18, pady=(16, 8))
 
-        self.weather_frame = self.make_panel(root, "Weather", GOLD, 1)
+        self.weather_frame = self.make_panel(root, "Weather", GOLD, 1.5)
         self.weather_frame.pack(fill="x", padx=26, pady=(8, 14))
         self.weather_label = tk.Label(
             self.weather_frame.body,
