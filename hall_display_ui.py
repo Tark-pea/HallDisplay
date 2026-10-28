@@ -65,7 +65,7 @@ class App(tk.Tk):
         self.important_frame.pack(fill="x", padx=26, pady=(8, 14))
         self.add_bullet(self.important_frame.body, "Hall meetings at 9:30 PM every tuesday!", CREAM)
         self.add_bullet(self.important_frame.body, "All hall trick or treating this Thursday!", CREAM)
-	self.add_bullet(self.important_frame.body, "Happy Halloween!", CREAM)
+        self.add_bullet(self.important_frame.body, "Happy Halloween!", CREAM)
 
         self.extra2_frame = self.make_panel(root, "Loops", GOLD, 1) #Step is very small
         self.extra2_frame.pack(fill="x", padx=26, pady=(8, 14))
