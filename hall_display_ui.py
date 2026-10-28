@@ -5,15 +5,26 @@ import block_display_bot as bdb
 import get_weather_data as gwd
 import menu_board as md 
 
-BG = "#111111"
-STONE = "#1b1b1b"
-STONE_2 = "#252525"
-BLUE = "#2c7fb8"
-JADE = "#c1296d"
-TERRACOTTA = "#b35a3c"
-CREAM = "#f2e6c9"
-GOLD = "#d4a64a"
-BORDER = "#4a3b22"
+#BG = "#111111"
+#STONE = "#1b1b1b"
+#STONE_2 = "#252525"
+#BLUE = "#2c7fb8"
+#JADE = "#c1296d"
+#TERRACOTTA = "#b35a3c"
+#CREAM = "#f2e6c9"
+#GOLD = "#d4a64a"
+#BORDER = "#4a3b22"
+
+BG = "#100D18"          # Midnight black-purple
+STONE = "#1C1726"       # Dark haunted purple
+STONE_2 = "#292033"     # Lighter purple
+BLUE = "#F07818"        # Pumpkin orange
+JADE = "#9B59B6"        # Ghostly purple
+TERRACOTTA = "#A83232"  # Dark blood red
+CREAM = "#FFF0D0"       # Candlelight cream
+GOLD = "#FFB52E"        # Golden pumpkin
+BORDER = "#49301F"      # Dark autumn brown
+
 
 class App(tk.Tk):
     def __init__(self):
@@ -53,7 +64,7 @@ class App(tk.Tk):
         self.important_frame = self.make_panel(root, "Important things", TERRACOTTA, 2)
         self.important_frame.pack(fill="x", padx=26, pady=(8, 14))
         self.add_bullet(self.important_frame.body, "Hall meetings at 9:30 PM every tuesday!", CREAM)
-        self.add_bullet(self.important_frame.body, "Room check is right after every hall meeting.", CREAM)
+        self.add_bullet(self.important_frame.body, "All hall trick or treating this Thursday!", CREAM)
 
         self.extra2_frame = self.make_panel(root, "Loops", GOLD, 1) #Step is very small
         self.extra2_frame.pack(fill="x", padx=26, pady=(8, 14))
@@ -133,7 +144,7 @@ class App(tk.Tk):
     def add_bullet(self, parent, text, fg):
         row = tk.Frame(parent, bg=STONE)
         row.pack(fill="x", padx=18, pady=6)
-        tk.Label(row, text="▣", fg=GOLD, bg=STONE, font=("Sans", 16, "bold")).pack(side="left", padx=(0, 10))
+        tk.Label(row, text="▣", fg=GOLD, bg=STONE, font=("Sans", 16, "bold")).pack(side="left", padx=(0, 10)) # ^v
         tk.Label(row, text=text, fg=fg, bg=STONE, font=("Sans", 24), wraplength=900, justify="left").pack(side="left", anchor="w")
 
     def update_ui(self):
